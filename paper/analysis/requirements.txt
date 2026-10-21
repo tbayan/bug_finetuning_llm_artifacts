@@ -1,0 +1,4 @@
+# In addition to the project requirements (pandas, numpy, scikit-learn, xgboost,
+# joblib, torch, transformers), the rebuild script needs:
+matplotlib==3.10.7
+scipy==1.16.3

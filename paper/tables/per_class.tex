@@ -1,0 +1,14 @@
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}} l cc cc cc cc c @{}}
+\toprule
+ & \multicolumn{2}{c}{Critical} & \multicolumn{2}{c}{Major} & \multicolumn{2}{c}{Minor} & \multicolumn{2}{c}{Trivial} & Critical recall \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Model & P & R & P & R & P & R & P & R & 95\% CI \\
+\midrule
+Soft-voting ensemble & 0.518 & 0.513 & 0.447 & 0.311 & 0.408 & 0.458 & 0.553 & 0.660 & [0.471, 0.557] \\
+CodeBERT & 0.557 & 0.471 & 0.423 & 0.440 & 0.454 & 0.511 & 0.655 & 0.648 & [0.427, 0.515] \\
+Llama 3 8B (zero-shot) & 0.741 & 0.162 & 0.388 & 0.450 & 0.319 & 0.829 & 0.677 & 0.041 & [0.129, 0.195] \\
+Qwen 2.5 7B (zero-shot) & 0.700 & 0.127 & 0.396 & 0.366 & 0.322 & 0.886 & 0.722 & 0.128 & [0.099, 0.157] \\
+Llama 3 8B (fine-tuned) & 0.632 & 0.358 & 0.412 & 0.707 & 0.517 & 0.493 & 0.720 & 0.546 & [0.316, 0.400] \\
+Qwen 2.5 7B (fine-tuned) & 0.524 & 0.691 & 0.484 & 0.335 & 0.495 & 0.214 & 0.536 & 0.827 & [0.651, 0.731] \\
+\bottomrule
+\end{tabular*}

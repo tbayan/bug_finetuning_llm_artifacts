@@ -1,0 +1,13 @@
+{
+  "name": "thesis-bug-triage",
+  "private": true,
+  "scripts": {
+    "start": "./run.sh",
+    "dev": "./run.sh",
+    "dev:api": "python -m uvicorn api.server:app --reload --host 127.0.0.1 --port 8000",
+    "dev:frontend": "npm run dev --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

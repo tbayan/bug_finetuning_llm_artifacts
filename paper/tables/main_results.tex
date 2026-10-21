@@ -1,0 +1,20 @@
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}} llccccc @{}}
+\toprule
+Family & Model & Acc. & Macro-P & Macro-R & Macro-F1 [95\% CI] & F1, dedup. \\
+\midrule
+TF-IDF & Naive Bayes & 0.435 & 0.456 & 0.437 & 0.430 [0.409, 0.452] & 0.425 \\
+ & Logistic regression & 0.491 & 0.488 & 0.490 & 0.489 [0.467, 0.510] & 0.474 \\
+ & Linear SVM & 0.490 & 0.484 & 0.489 & 0.484 [0.462, 0.505] & 0.471 \\
+ & Random forest & 0.491 & 0.486 & 0.491 & 0.483 [0.461, 0.504] & 0.455 \\
+ & XGBoost & 0.479 & 0.475 & 0.479 & 0.476 [0.454, 0.498] & 0.445 \\
+ & Soft-voting ensemble & 0.486 & 0.482 & 0.486 & 0.479 [0.457, 0.501] & 0.458 \\
+\midrule
+Encoder & CodeBERT & 0.518 & 0.522 & 0.517 & 0.518 [0.497, 0.539] & 0.508 \\
+\midrule
+Zero-shot & Llama 3 8B & 0.367 & 0.531 & 0.370 & 0.305 [0.286, 0.325] & 0.302 \\
+ & Qwen 2.5 7B & 0.374 & 0.535 & 0.377 & 0.321 [0.300, 0.342] & 0.320 \\
+\midrule
+Fine-tuned & Llama 3 8B & 0.527 & 0.570 & 0.526 & \textbf{0.526} [0.504, 0.548] & 0.524 \\
+ & Qwen 2.5 7B & 0.518 & 0.510 & 0.517 & 0.485 [0.463, 0.506] & 0.478 \\
+\bottomrule
+\end{tabular*}

@@ -1,0 +1,13 @@
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}} lcccccc @{}}
+\toprule
+Model & Accuracy & Macro-P & Macro-R & Macro-F1 & Logged F1 & Logged time (s) \\
+\midrule
+Naive Bayes & 0.450 & 0.472 & 0.450 & 0.444 & 0.4439 & 0.52 \\
+Logistic regression & 0.493 & 0.489 & 0.493 & 0.491 & 0.4908 & 0.39 \\
+Linear SVM & 0.495 & 0.488 & 0.495 & 0.489 & 0.4887 & 0.60 \\
+Random forest & 0.501 & 0.495 & 0.501 & 0.494 & 0.4939 & 1.09 \\
+XGBoost & 0.495 & 0.490 & 0.495 & 0.492 & 0.4917 & 0.58 \\
+Soft-voting ensemble & 0.498 & 0.492 & 0.498 & 0.490 & 0.4904 & 1.02 \\
+CodeBERT & 0.531 & 0.535 & 0.531 & 0.532 & 0.5322 & 196.27 \\
+\bottomrule
+\end{tabular*}

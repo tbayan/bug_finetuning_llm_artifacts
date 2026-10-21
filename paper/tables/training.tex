@@ -1,0 +1,20 @@
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{4.2cm} @{}}
+\toprule
+ & CodeBERT & Llama 3 8B (QLoRA) & Qwen 2.5 7B (QLoRA) \\
+\midrule
+Initial checkpoint & \texttt{microsoft/codebert-base} & \texttt{unsloth/llama-3-8b-bnb-4bit} & \texttt{unsloth/qwen2.5-7b-bnb-4bit} \\
+Trainable / total parameters & 124,648,708 / 124,648,708 & 83,886,080 / 8,114,147,328 & 80,740,352 / 7,696,356,864 \\
+Adaptation & full fine-tuning, classification head & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{LoRA $r=32$, $\alpha=32$, dropout 0.05, on q, k, v, o, gate, up, down} \\
+Precision in training & fp32 weights, fp16 mixed precision & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{block projections frozen in NF4 with double quantisation (bitsandbytes); embeddings, norms and LM head in bf16; bf16 compute} \\
+Objective & cross-entropy on 4 labels & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{next-token cross-entropy on the whole sequence (prompt not masked)} \\
+Optimiser, learning rate & AdamW, $2\times10^{-5}$, linear decay, no warm-up & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{paged\_adamw\_8bit, $1\times10^{-4}$, cosine, 10\% warm-up} \\
+Weight decay & 0.01 & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{0.01} \\
+Batch, epochs, steps & 16, 3, 3,000 & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{8 ($2\times4$ accumulation), 3, 6,000} \\
+Input limit & 512 tokens & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{4,000 characters; 4096-token context} \\
+Seed & 42 & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{3407} \\
+Hardware, software & Colab GPU (type not logged) & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{A100-SXM4-40GB; Unsloth 2026.3.3, Transformers 5.2.0, PyTorch 2.10.0+cu128} \\
+Training wall clock & 0:23:28 & 3:01:12 & 2:39:47 \\
+Mean loss, epochs 1 / 2 / 3 & not logged per epoch & 1.091 / 0.915 / 0.760 & 1.054 / 0.916 / 0.795 \\
+Deployed artefact & PyTorch weights (fp32) & \multicolumn{2}{>{\raggedright\arraybackslash}p{8.6cm}}{LoRA merged into 16-bit weights, GGUF Q4\_K\_M (llama.cpp)} \\
+\bottomrule
+\end{tabular*}

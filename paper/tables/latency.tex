@@ -1,0 +1,12 @@
+\begin{tabular*}{\tblwidth}{@{\extracolsep{\fill}} lrrr>{\raggedright\arraybackslash}p{4.6cm} @{}}
+\toprule
+Model & Reports & Total (s) & Per report & Timed loop covers \\
+\midrule
+TF-IDF classifiers (six) & 4,000 & 0.39--1.09 & 0.10--0.27 ms & load model, vectorise, predict \\
+CodeBERT & 4,000 & 196.3 & 49 ms & per-report tokenise and forward pass \\
+Llama 3 8B (zero-shot) & 2,000 & 2,742 & 1.37 s & HTTP call to local Ollama, 150-token cap, 50 ms pause \\
+Qwen 2.5 7B (zero-shot) & 2,000 & 3,076 & 1.54 s & HTTP call to local Ollama, 150-token cap, 50 ms pause \\
+Llama 3 8B (fine-tuned) & 2,000 & 2,619 & 1.31 s & llama-cpp-python call, 32-token cap \\
+Qwen 2.5 7B (fine-tuned) & 2,000 & 2,693 & 1.35 s & llama-cpp-python call, 32-token cap \\
+\bottomrule
+\end{tabular*}

@@ -1,0 +1,108 @@
+% Architecture of the two learned neural classifiers, drawn in the style of
+% Vaswani et al. (2017), Fig. 1. Dimensions are read from codebert_model/config.json
+% and from the GGUF headers (outputs/results.json, "deployed_gguf").
+\begin{tikzpicture}[font=\sffamily\scriptsize, >={Stealth[length=1.6mm]},
+  node distance=2.6mm,
+  enc/.style={draw=black, fill=gray!22, rounded corners=1.5pt, line width=0.5pt,
+              minimum width=3.2cm, minimum height=5.4mm, align=center, text=inkA},
+  frz/.style={draw=black, fill=white, rounded corners=1.5pt, line width=0.5pt,
+              minimum width=3.0cm, minimum height=5.4mm, align=center, text=inkA},
+  ada/.style={frz},
+  io/.style={align=center, text=inkA},
+  add/.style={circle, draw=black, line width=0.5pt, inner sep=0pt, minimum size=3.4mm, font=\sffamily\footnotesize},
+  tag/.style={draw=black, fill=gray!22, rounded corners=1pt, inner sep=1.4pt, font=\sffamily\tiny, text=inkA},
+  arr/.style={->, draw=black, line width=0.5pt},
+  blk/.style={draw=black!45, fill=gray!5, rounded corners=4pt, inner sep=2.4mm},
+  ttl/.style={font=\sffamily\footnotesize\bfseries, text=inkA}]
+
+% ------------------------------------------------------------------ (a) CodeBERT encoder
+\node[io] (ein) {report text\\(first 512 tokens)};
+\node[enc, above=3.5mm of ein] (eemb) {token + position embedding,\\LayerNorm};
+\node[enc, above=6mm of eemb] (eatt) {multi-head self-attention\\(12 heads)};
+\node[enc, above=of eatt] (ean1) {add \& LayerNorm};
+\node[enc, above=of ean1] (eff) {feed-forward\\768 $\to$ 3,072 $\to$ 768, GELU};
+\node[enc, above=of eff] (ean2) {add \& LayerNorm};
+\begin{scope}[on background layer]
+  \node[blk, fit=(eatt)(ean2)(eff), inner xsep=6mm] (eblk) {};
+\end{scope}
+\node[left=1mm of eblk, font=\sffamily\small, text=inkA] {12$\times$};
+\node[enc, above=6mm of ean2] (ecls) {first-token vector (768)};
+\node[enc, above=of ecls] (ehead) {classification head:\\dense, tanh, linear 768 $\to$ 4};
+\node[io, above=3.5mm of ehead] (eout) {softmax over the\\four severity labels};
+\foreach \a/\b in {ein/eemb, eemb/eatt, eatt/ean1, ean1/eff, eff/ean2, ean2/ecls, ecls/ehead, ehead/eout}
+  \draw[arr] (\a) -- (\b);
+% residual paths (post-norm)
+\coordinate (er1) at ($(eemb.north)!0.5!(eatt.south)$);
+\draw[arr, rounded corners=2pt] (er1) -- ([xshift=1.8mm]eatt.east |- er1) |- (ean1.east);
+\coordinate (er2) at ($(ean1.north)!0.5!(eff.south)$);
+\draw[arr, rounded corners=2pt] (er2) -- ([xshift=3.6mm]eff.east |- er2) |- (ean2.east);
+
+% ------------------------------------------------------------------ (b) decoder LLM with LoRA
+\node[io, right=3.1cm of ein] (din) {prompt of Listing~1:\\instruction + report\\(first 4,000 characters)};
+\node[frz, above=3.5mm of din] (demb) {token embedding};
+\node[frz, above=6mm of demb] (dn1) {RMSNorm};
+\node[ada, above=of dn1] (datt) {grouped-query\\self-attention, RoPE\\projections q, k, v, o};
+\node[add, above=2mm of datt] (da1) {$+$};
+\node[frz, above=2mm of da1] (dn2) {RMSNorm};
+\node[ada, above=of dn2] (dff) {SwiGLU feed-forward\\projections gate, up, down};
+\node[add, above=2mm of dff] (da2) {$+$};
+\begin{scope}[on background layer]
+  \node[blk, fit=(dn1)(da2)(datt)(dff), inner xsep=7mm] (dblk) {};
+\end{scope}
+\node[left=1mm of dblk, font=\sffamily\small, text=inkA] {$N\times$};
+\node[tag, anchor=west] at ([xshift=0.8mm]datt.east) {+LoRA};
+\node[tag, anchor=west] at ([xshift=0.8mm]dff.east) {+LoRA};
+\node[frz, above=6mm of da2] (dnf) {RMSNorm};
+\node[frz, above=of dnf] (dlm) {LM head $\to$ next-token\\probabilities};
+\node[io, above=3.5mm of dlm] (dout) {generated answer, e.g.\ \texttt{\{"severity": "Major"\}},\\parsed into the label (Section~\ref{sec:protocol})};
+\foreach \a/\b in {din/demb, demb/dn1, dn1/datt, datt/da1, da1/dn2, dn2/dff, dff/da2, da2/dnf, dnf/dlm, dlm/dout}
+  \draw[arr] (\a) -- (\b);
+% residual paths (pre-norm)
+\coordinate (dr1) at ($(demb.north)!0.5!(dn1.south)$);
+\draw[arr, rounded corners=2pt] (dr1) -- ([xshift=-2mm]datt.west |- dr1) |- (da1.west);
+\coordinate (dr2) at ($(da1.north)!0.5!(dn2.south)$);
+\draw[arr, rounded corners=2pt] (dr2) -- ([xshift=-4mm]datt.west |- dr2) |- (da2.west);
+
+% shared input and panel titles on one line
+\node[io, below=5mm of $(ein)!0.5!(din)$, draw=rule, fill=wash, rounded corners=1.5pt, inner sep=3pt] (rep) {bug report description};
+\draw[arr] (rep.west) -| (ein.south);
+\draw[arr] (rep.east) -| (din.south);
+\coordinate (top) at ([yshift=3.5mm]dout.north);
+\node[ttl, anchor=south] at (eout |- top) {(a) CodeBERT, full fine-tuning};
+\node[ttl, anchor=south] at (dout |- top) {(b) Llama 3 8B, Qwen 2.5 7B with QLoRA};
+
+% ------------------------------------------------------------------ (c) LoRA detail
+\begin{scope}[shift={($(dblk.east |- dn2)+(2.15cm,-0.2cm)$)}]
+  \node[io] (lx) at (0,0) {$x \in \mathbb{R}^{k}$};
+  \node[ada, minimum width=1.55cm, minimum height=1.2cm] (lw) at (-0.95,1.45) {$W_0$\\$d \times k$\\frozen, NF4};
+  \node[enc, minimum width=1.25cm, minimum height=4.6mm] (la) at (0.95,0.95) {$A$: $r \times k$};
+  \node[enc, minimum width=1.25cm, minimum height=4.6mm] (lb) at (0.95,1.95) {$B$: $d \times r$};
+  \node[add] (lsum) at (0,2.95) {$+$};
+  \node[io] (lh) at (0,3.55) {$h = W_0x + \tfrac{\alpha}{r}BAx$};
+  \draw[arr] (lx.north) -- ++(0,0.22) -| (lw.south);
+  \draw[arr] (lx.north) -- ++(0,0.22) -| (la.south);
+  \draw[arr] (la) -- (lb);
+  \draw[arr] (lw.north) |- (lsum.west);
+  \draw[arr] (lb.north) |- (lsum.east);
+  \node[font=\sffamily\tiny, text=inkB, anchor=west] at ([xshift=0.5mm, yshift=1.6mm]lb.north) {scale $\alpha/r$};
+  \node[ttl, anchor=south] at ([yshift=1mm]lh.north) {(c) one adapted projection};
+\end{scope}
+\node[io, anchor=north, font=\sffamily\scriptsize] at ([yshift=-3mm]lx.south) {%
+  \setlength{\tabcolsep}{2.5pt}%
+  \begin{tabular}{@{}lrr@{}}
+    & Llama & Qwen \\[-1pt]
+    & 3 8B & 2.5 7B \\
+    \hline
+    blocks $N$ & 32 & 28 \\
+    width $d_{\text{model}}$ & 4,096 & 3,584 \\
+    feed-forward & 14,336 & 18,944 \\
+    heads, q / kv & 32 / 8 & 28 / 4 \\
+    LoRA $r$, $\alpha$ & 32, 32 & 32, 32 \\
+    trainable & 83.9M & 80.7M
+  \end{tabular}};
+
+% legend
+\node[anchor=north, font=\sffamily\scriptsize, text=inkA] at ([yshift=-2.5mm]rep.south) {%
+  \tikz[baseline=0.1ex]{\draw[draw=black, fill=gray!22, line width=0.5pt, rounded corners=1pt] (0,0) rectangle (4.5mm,2.4mm);}~trained parameters (full fine-tuning or LoRA adapters)\qquad
+  \tikz[baseline=0.1ex]{\draw[draw=black, fill=white, line width=0.5pt, rounded corners=1pt] (0,0) rectangle (4.5mm,2.4mm);}~frozen parameters};
+\end{tikzpicture}

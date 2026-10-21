@@ -1,0 +1,5 @@
+{
+  "codebert_params": 124648708,
+  "codebert_test_tokens_median": 113.0,
+  "codebert_test_over_512_share": 0.1315
+}

@@ -1,0 +1,45 @@
+# OS / editor
+.DS_Store
+._*
+.idea/
+.vscode/
+
+# Secrets
+.env
+.env.*
+
+# Python / Node / environments
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+frontend/dist/
+
+# Files above GitHub's 100 MB limit: keep them locally, publish via a data/model host,
+# and check them against the SHA-256 values in PROVENANCE.md
+dataset/bug_reports_train.csv
+models/llm/*.gguf
+models/baseline/rf.pkl
+models/baseline/ensemble.pkl
+codebert_model/model.safetensors
+
+# Report text (contains names and e-mail addresses from Eclipse Bugzilla): kept locally,
+# rebuilt from the public dump by dataset/1_prep_balance_split_csv.py; the paper's
+# per-report labels are published in paper/outputs/ instead
+dataset/train.csv
+dataset/test.csv
+dataset/*.jsonl
+results/*_predictions.csv
+results/history_entries.json
+
+# Internal notes (not for the public repository)
+notes/
+
+# LaTeX build files
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.blg
+paper/*.spl
+paper/*.abs
+paper/arxiv_upload.tar.gz

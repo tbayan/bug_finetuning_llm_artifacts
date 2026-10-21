@@ -1,0 +1,2 @@
+model,n_val,accuracy,macro_f1,macro_precision,macro_recall,duration_sec
+Qwen 2.5 7B (Fine-tuned),2000,0.5185,0.4851,0.5097,0.5166,2692.8

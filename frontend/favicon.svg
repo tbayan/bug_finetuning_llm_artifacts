@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dff4ff" />
+      <stop offset="55%" stop-color="#b3e3fd" />
+      <stop offset="100%" stop-color="#7dd3fc" />
+    </linearGradient>
+    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2" />
+    </linearGradient>
+  </defs>
+  <path d="M32 4l21 8v17c0 14.2-8.8 25.1-21 30.5C19.8 54.1 11 43.2 11 29V12l21-8z" fill="url(#shieldGrad)" />
+  <path d="M32 8.8l17.2 6.5v13.8c0 11.7-6.9 20.8-17.2 25.7-10.3-4.9-17.2-14-17.2-25.7V15.3L32 8.8z" fill="none" stroke="#38bdf8" stroke-width="1.4" opacity="0.95" />
+  <path d="M23 19h18v12.5c0 6.2-3.8 11.5-9 14.2-5.2-2.7-9-8-9-14.2V19z" fill="url(#coreGrad)" />
+  <path d="M32 18v24.5" stroke="#0284c7" stroke-width="2.1" stroke-linecap="round" />
+  <path d="M32 23.5h7.2M32 30.8h9.2M32 38h6.5" stroke="#0284c7" stroke-width="2.1" stroke-linecap="round" />
+  <circle cx="32" cy="23.5" r="2.35" fill="#0f172a" />
+  <circle cx="41.2" cy="30.8" r="2.05" fill="#0369a1" />
+  <circle cx="38.5" cy="38" r="1.9" fill="#0369a1" />
+</svg>

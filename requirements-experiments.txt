@@ -1,0 +1,28 @@
+# Everything needed to rerun or extend the experiments of the paper.
+# Versions below are the ones with which every number in paper/ was verified (October 2026).
+# The original training runs used the versions recorded in their logs:
+#   QLoRA (Colab, A100): Unsloth 2026.3.3, Transformers 5.2.0, PyTorch 2.10.0+cu128
+#   CodeBERT (Colab):    Transformers 5.0.0 (codebert_model/config.json)
+
+# data, TF-IDF baselines, statistics, figures
+pandas==3.0.2
+numpy==2.4.4
+scikit-learn==1.8.0
+xgboost==3.2.0
+joblib
+scipy==1.16.3
+matplotlib==3.10.7
+datasets            # downloads AndressaStefany/bug-reports (dataset/1_prep_balance_split_csv.py)
+
+# CodeBERT inference and re-scoring
+torch==2.11.0
+transformers==5.5.4
+
+# fine-tuned GGUF models (scripts/evaluate_*_finetuned.py, CyberTriage Stage 1)
+llama-cpp-python
+
+# zero-shot runs and CyberTriage Stage 2 need Ollama (https://ollama.com) with
+#   ollama pull llama3:8b && ollama pull qwen2.5:7b
+# QLoRA fine-tuning runs in colab_scripts/*.ipynb on a GPU; the notebooks install
+#   unsloth, unsloth-zoo, trl, peft, accelerate, bitsandbytes, xformers
+# CyberTriage app: requirements-backend.txt and frontend/package.json (npm)

@@ -1,0 +1,2 @@
+model,n_val,accuracy,macro_f1,macro_precision,macro_recall,duration_sec
+Llama 3 8b,2000,0.3675,0.3051,0.5313,0.3703,2742.43
