@@ -6,8 +6,8 @@ TF-IDF classifiers and CodeBERT are re-scored on the original test split so
 that every model can be compared on the same report IDs.
 
 Run from the repository root:
-    python paper/analysis/rebuild_results.py            # reuse cached re-scores
-    python paper/analysis/rebuild_results.py --rescore  # re-run TF-IDF + CodeBERT
+    python analysis/rebuild_results.py            # reuse cached re-scores
+    python analysis/rebuild_results.py --rescore  # re-run TF-IDF + CodeBERT
 
 Inputs
   dataset/bug_reports_train.csv     raw Hugging Face dump (AndressaStefany/bug-reports)
@@ -20,10 +20,10 @@ Inputs
   results/*_metrics.csv, results/baseline_comparison.csv   logged metrics and wall-clock times
   colab_scripts/*.ipynb             training logs (QLoRA and CodeBERT)
 
-Outputs (under paper/)
-  outputs/   JSON and CSV records behind every reported value
-  tables/    LaTeX tabular bodies included by main.tex
-  figs/      PDF figures included by main.tex
+Outputs (under outputs/)
+  *.json, *.csv   records behind every reported value
+  tables/         LaTeX tabular bodies included by the manuscript
+  figs/           PDF figures included by the manuscript
 
 Every value is a measurement on stored records unless the record says
 "estimate" (prevalence re-weighting), which is computed, not observed.
@@ -49,11 +49,10 @@ from sklearn.model_selection import train_test_split
 # use the Python-backed storage so results do not depend on which packages are present.
 pd.set_option("mode.string_storage", "python")
 
-ROOT = Path(__file__).resolve().parents[2]
-PAPER = ROOT / "paper"
-OUT = PAPER / "outputs"
-TAB = PAPER / "tables"
-FIG = PAPER / "figs"
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "outputs"
+TAB = OUT / "tables"
+FIG = OUT / "figs"
 for d in (OUT, TAB, FIG):
     d.mkdir(parents=True, exist_ok=True)
 
@@ -406,17 +405,23 @@ def gguf_metadata() -> dict:
 
 
 def target_token_counts() -> dict:
-    """Length of the trained Stage-1 answer under each base tokenizer (needs the public tokenizer files)."""
+    """Length of the trained Stage-1 answer under each base tokenizer (needs the public tokenizer files).
+    Without transformers or the tokenizer files, the counts stored in outputs/results.json are kept."""
+    try:
+        stored = json.loads((OUT / "results.json").read_text()).get("stage1_target_tokens", {})
+    except (OSError, ValueError):
+        stored = {}
     try:
         from transformers import AutoTokenizer
     except ImportError:
-        return {}
+        print("  transformers not installed: keeping the stored Stage-1 token counts")
+        return stored
     out = {}
     for key, name in (("llama_ft", "unsloth/llama-3-8b"), ("qwen_ft", "Qwen/Qwen2.5-7B")):
         try:
             tok = AutoTokenizer.from_pretrained(name)
-        except Exception as e:  # offline: keep the record explicit rather than silent
-            out[key] = f"tokenizer unavailable: {e.__class__.__name__}"
+        except Exception as e:  # offline: keep the stored record, or say why there is none
+            out[key] = stored.get(key, f"tokenizer unavailable: {e.__class__.__name__}")
             continue
         out[key] = {c: len(tok(json.dumps({"severity": c}), add_special_tokens=False)["input_ids"]) for c in LABELS}
     return out

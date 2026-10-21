@@ -1,5 +1,5 @@
 # Enough to download the data and reproduce every number, table and figure of the paper
-# (tested with Python 3.12). For training and model runs use ../../requirements-experiments.txt.
+# (tested with Python 3.12). For training and model runs use ../requirements-experiments.txt.
 pandas==3.0.2
 numpy==2.4.4
 scikit-learn==1.8.0

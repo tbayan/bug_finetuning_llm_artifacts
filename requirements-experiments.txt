@@ -1,5 +1,5 @@
 # Everything needed to rerun or extend the experiments of the paper.
-# Versions below are the ones with which every number in paper/ was verified (October 2026).
+# Versions below are the ones with which every number in the paper was verified (October 2026).
 # The original training runs used the versions recorded in their logs:
 #   QLoRA (Colab, A100): Unsloth 2026.3.3, Transformers 5.2.0, PyTorch 2.10.0+cu128
 #   CodeBERT (Colab):    Transformers 5.0.0 (codebert_model/config.json)

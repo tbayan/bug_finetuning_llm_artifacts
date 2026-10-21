@@ -2,7 +2,7 @@
 
 Code, data records and paper for the study *Bug Severity Classification with Fine-Tuned
 Open LLMs: A Paired Comparison with TF-IDF and CodeBERT Baselines on Eclipse Reports*
-(Kanatov, Bayan, Boranbayev). The paper is in [`paper/main.pdf`](paper/main.pdf).
+(Kanatov, Bayan, Boranbayev). The preprint will be linked here once it is on arXiv.
 
 ## What the study does
 
@@ -24,7 +24,7 @@ Fine-tuned Llama 3 and CodeBERT cannot be told apart on this test set, and CodeB
 27 times faster per report. The repository also contains **CyberTriage**, a web tool that
 classifies a report and exports it to Jira (Section 6 of the paper).
 
-## Reproduce the paper in four steps
+## Reproduce the paper's results in three steps
 
 No GPU is needed. Tested with Python 3.12 on Linux, from a fresh clone.
 
@@ -35,7 +35,7 @@ git clone https://github.com/tbayan/bug_finetuning_llm_artifacts.git
 cd bug_finetuning_llm_artifacts
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r paper/analysis/requirements.txt
+pip install -r analysis/requirements.txt
 ```
 
 **2. Download the data** (public Hugging Face dataset, about 465 MB)
@@ -49,22 +49,16 @@ sha256sum dataset/bug_reports_train.csv
 **3. Rebuild every number, table and figure**
 
 ```bash
-python paper/analysis/rebuild_results.py
+python analysis/rebuild_results.py
 ```
 
 The script rebuilds the 20,000-report sample and the train/test split from the raw data,
-recomputes every metric, interval and test, and rewrites `paper/tables/`, `paper/figs/` and
-`paper/outputs/`. At the end it prints its checks: the two metric checks should say `True`
+recomputes every metric, interval and test, and rewrites `outputs/`, including the paper's
+tables (`outputs/tables/`) and figures (`outputs/figs/`). At the end it prints its checks: the two metric checks should say `True`
 for every model. To confirm you got exactly the paper's results:
 
 ```bash
-git diff --stat paper/tables paper/figs     # prints nothing if everything matches
-```
-
-**4. Build the PDF** (optional, needs a LaTeX installation)
-
-```bash
-make -C paper
+git diff --stat outputs     # prints nothing if everything matches
 ```
 
 ## Run or extend the experiments
@@ -89,7 +83,7 @@ for tuning; the paper lists both as gaps of the original runs.
 - **Trained model files** (fine-tuned GGUF files for Llama 3 and Qwen 2.5, CodeBERT weights,
   two large TF-IDF models). They are not redistributed and are too large for GitHub. You do
   not need them to reproduce the paper, because every per-report prediction is released in
-  `paper/outputs/test_predictions.csv`. Their checksums are in `PROVENANCE.md`.
+  `outputs/test_predictions.csv`. Their checksums are in `PROVENANCE.md`.
 - **Report text** (the split files and raw prediction files). Eclipse bug reports contain
   names and e-mail addresses, so they are rebuilt from the public data in step 3 instead of
   being stored here.
@@ -98,8 +92,8 @@ for tuning; the paper lists both as gaps of the original runs.
 
 | Path | Contents |
 |---|---|
-| `paper/` | the paper (`main.tex`, `main.pdf`), its tables and figures, and `analysis/rebuild_results.py` |
-| `paper/outputs/` | every computed value (`results.json`), the bug IDs of the split (`split_ids.csv`), and each model's prediction per test report (`test_predictions.csv`) |
+| `analysis/` | `rebuild_results.py`, which computes every number, table and figure of the paper |
+| `outputs/` | every computed value (`results.json`), the bug IDs of the split (`split_ids.csv`), each model's prediction per test report (`test_predictions.csv`), and the paper's tables and figures |
 | `dataset/` | scripts that build the dataset and the split |
 | `colab_scripts/` | training notebooks with their logs |
 | `scripts/`, `src/`, `utils/` | training and evaluation scripts, model wrappers |

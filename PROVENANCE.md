@@ -12,7 +12,7 @@ This folder was assembled on 2026-10-21 from the working copy of
 - `screenshots/04-batch-evaluation-llms.png` (padded numbers) moved to `records/legacy_scoring/`.
 - Thesis-only material (thesis text, thesis figure scripts, planning notes) was not copied.
 
-Files written for this release are new: `README.md`, `PROVENANCE.md`, `requirements-experiments.txt`, `.gitignore`, `paper/` (manuscript and analysis script), `records/legacy_scoring/README.md` and `notes/`. Every other file is a byte-identical copy of its source.
+Files written for this release are new: `README.md`, `PROVENANCE.md`, `requirements-experiments.txt`, `.gitignore`, `analysis/` (analysis script), `outputs/` (its records, tables and figures) and `records/legacy_scoring/README.md`. Every other file is a byte-identical copy of its source.
 
 ## Commit history of the source repository
 

@@ -25,21 +25,17 @@ codebert_model/model.safetensors
 
 # Report text (contains names and e-mail addresses from Eclipse Bugzilla): kept locally,
 # rebuilt from the public dump by dataset/1_prep_balance_split_csv.py; the paper's
-# per-report labels are published in paper/outputs/ instead
+# per-report labels are published in outputs/ instead
 dataset/train.csv
 dataset/test.csv
 dataset/*.jsonl
 results/*_predictions.csv
 results/history_entries.json
 
-# Internal notes (not for the public repository)
+# Kept private: internal notes, handover and assistant rules, and the manuscript sources
+# (paper/ builds from outputs/; the preprint will be linked from README.md once posted)
 notes/
-
-# LaTeX build files
-paper/*.aux
-paper/*.log
-paper/*.out
-paper/*.blg
-paper/*.spl
-paper/*.abs
-paper/arxiv_upload.tar.gz
+docs/
+AGENTS.md
+CLAUDE.md
+paper/

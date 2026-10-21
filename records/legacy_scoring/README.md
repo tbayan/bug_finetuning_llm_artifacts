@@ -12,7 +12,7 @@ fine-tuned Llama 3 at 62% F1, 3,274 s).
 
 Section 1 of the paper discloses this. All numbers in the paper are computed from the
 real per-report predictions in `results/*_predictions.csv` by
-`paper/analysis/rebuild_results.py`. The copy of `api/server.py` in this repository no
+`analysis/rebuild_results.py`. The copy of `api/server.py` in this repository no
 longer calls the routine and shows the logged metrics unchanged.
 
 | Model | Padded value (thesis, old screen) | Real value (2,000 reports) |
