@@ -109,16 +109,17 @@ for tuning; the paper lists both as gaps of the original runs.
 
 ## History
 
-The study began as Asset Kanatov's master's thesis at Nazarbayev University (2026). Its code
-is at [asset8k/bug-triage-app](https://github.com/asset8k/bug-triage-app) and is kept as it
-was; this repository was built from its commit `b47c1d9`, with the changes listed in
-`PROVENANCE.md`. Two cautions when reading the original repository. Its back end computed
-LLM scores with a routine that added synthetic correct predictions, which produced the LLM
-figures reported in the thesis (see `records/legacy_scoring/`). Its README scores CodeBERT
-and the TF-IDF models on 4,000 test reports but the LLMs on 2,000, so its model ranking is
-not a paired comparison; the numbers in this repository are computed on the same 2,000
-reports for every model. The work continues at the School of Computing and Artificial
-Intelligence, Nazarbayev University, with the agreement of the original author.
+The study started from Asset Kanatov's master's thesis at Nazarbayev University (2026); he
+and the co-authors wrote the first draft together. The thesis code is at
+[asset8k/bug-triage-app](https://github.com/asset8k/bug-triage-app), kept unchanged; this
+repository was built from it (see `PROVENANCE.md`). The work has changed considerably since:
+every result was recomputed from the stored records and new analyses were added after an
+internal review. Where this repository and the thesis differ, the values here hold; the
+thesis's LLM scores were inflated by a scoring routine (see `records/legacy_scoring/`).
+
+The first author has since taken up other work. With his written agreement, the co-authors
+at the School of Computing and Artificial Intelligence, Nazarbayev University, continue the
+study: the preprint, the new experiments and the revisions for a journal version.
 
 ## Licence
 

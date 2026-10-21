@@ -585,7 +585,9 @@ def tables(R: dict) -> None:
 # F. Figures (one style for the whole paper)
 # --------------------------------------------------------------------------
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
-GREYS = ["#ffffff", "#e9e9e9", "#cfcfcf", "#a8a8a8", "#7f7f7f", "#585858", "#333333"]
+# One colour per model family (Okabe-Ito, safe for colour-vision deficiency); the TikZ figures
+# in the manuscript use light tints of the same four colours.
+FAMILY_COLOUR = {"TF-IDF": "#0072B2", "Encoder": "#009E73", "Zero-shot": "#E69F00", "Fine-tuned": "#D55E00"}
 
 
 def style():
@@ -615,8 +617,9 @@ def fig_f1(R: dict) -> None:
             y += 1
             prev = FAMILY[k]
         m, (lo, hi) = R["shared"][k]["macro_f1"], R["boot_ci"][k]["macro_f1"]
-        ax.plot([lo, hi], [y, y], color="#555555", lw=1.4, solid_capstyle="butt", zorder=2)
-        ax.scatter([m], [y], s=26, color="black", zorder=3)
+        c = FAMILY_COLOUR[FAMILY[k]]
+        ax.plot([lo, hi], [y, y], color=c, lw=1.6, solid_capstyle="butt", zorder=2)
+        ax.scatter([m], [y], s=30, color=c, edgecolors="white", linewidths=0.8, zorder=3)
         ax.text(hi + 0.006, y, f"{m:.3f}", va="center", ha="left", fontsize=7, color="black")
         ys.append(y); labels.append("   " + NAME[k]); bold.append(False)
         y += 1
@@ -637,9 +640,8 @@ def fig_f1(R: dict) -> None:
 
 def fig_confusion(R: dict) -> None:
     import matplotlib.pyplot as plt
-    from matplotlib.colors import LinearSegmentedColormap
     style()
-    cmap = LinearSegmentedColormap.from_list("greys", GREYS)
+    cmap = plt.get_cmap("Blues")
     show = ["ensemble", "codebert", "llama_zs", "qwen_zs", "llama_ft", "qwen_ft"]
     fig, axes = plt.subplots(2, 3, figsize=(6.5, 4.7), sharex=True, sharey=True)
     for ax, k in zip(axes.flat, show):
@@ -649,7 +651,7 @@ def fig_confusion(R: dict) -> None:
         for i in range(4):
             for j in range(4):
                 ax.text(j, i, f"{int(cm[i, j])}", ha="center", va="center", fontsize=7.6,
-                        color="#fcfcfb" if rn[i, j] > 0.5 else INK, fontweight="bold" if i == j else "normal")
+                        color="#ffffff" if rn[i, j] > 0.55 else INK, fontweight="bold" if i == j else "normal")
         ax.set_title(label(k).replace(" (", "\n("), color=INK, pad=4)
         ax.set_xticks(range(4), [c[:4] + "." if len(c) > 5 else c for c in LABELS])
         ax.set_yticks(range(4), LABELS)
