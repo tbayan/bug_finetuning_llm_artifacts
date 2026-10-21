@@ -52,7 +52,7 @@
 \ExplSyntaxOff
 
 % Public repository with the code, data records and analysis script of this paper.
-\newcommand{\coderepo}{\url{https://github.com/tbayan/bug_finetuning_llm_arficafts}}
+\newcommand{\coderepo}{\url{https://github.com/tbayan/bug_finetuning_llm_artifacts}}
 
 % Elsevier submission items (highlights) are kept in the source but not printed on arXiv.
 \newif\ifjournalversion
@@ -289,7 +289,10 @@ We use the Hugging Face dataset \texttt{AndressaStefany/bug-reports}\footnote{\u
 \texttt{bug\_status} and \texttt{resolution}. The dataset has no card, so we identified
 it from its contents. The file holds 421,006 rows, but the last 60,000 rows are exact copies of
 earlier ones (bug IDs 1 to 62,767), leaving 361,006 unique reports with bug IDs up to
-424,785. That count and the per-label counts in Table~\ref{tab:dataset} match exactly
+424,785. The repeats come from the dataset repository itself: it stores two CSV files,
+\texttt{eclipse\_clear.csv} with 361,006 rows and \texttt{my\_dataset.csv} with 60,000
+rows that copy the first 60,000 of the former, and the standard loader joins both into
+one split. That count and the per-label counts in Table~\ref{tab:dataset} match exactly
 the Eclipse collection described by \citet{oliveira2024predictive}, who also used a
 separate Mozilla collection of 768,335 reports that is not part of this dump. The
 resolution values include \texttt{NOT\_ECLIPSE}, and 38\% of the unique descriptions

@@ -12,7 +12,8 @@ xgboost==3.2.0
 joblib
 scipy==1.16.3
 matplotlib==3.10.7
-datasets            # downloads AndressaStefany/bug-reports (dataset/1_prep_balance_split_csv.py)
+datasets==5.1.0     # downloads AndressaStefany/bug-reports (dataset/1_prep_balance_split_csv.py)
+huggingface-hub>=1.31,<2
 
 # CodeBERT inference and re-scoring
 torch==2.11.0

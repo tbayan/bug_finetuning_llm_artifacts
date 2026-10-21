@@ -45,6 +45,10 @@ from scipy.stats import binomtest
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
 from sklearn.model_selection import train_test_split
 
+# pandas 3 stores strings in Arrow arrays when pyarrow is installed (it comes with `datasets`);
+# use the Python-backed storage so results do not depend on which packages are present.
+pd.set_option("mode.string_storage", "python")
+
 ROOT = Path(__file__).resolve().parents[2]
 PAPER = ROOT / "paper"
 OUT = PAPER / "outputs"

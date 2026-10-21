@@ -1,4 +1,10 @@
-# In addition to the project requirements (pandas, numpy, scikit-learn, xgboost,
-# joblib, torch, transformers), the rebuild script needs:
-matplotlib==3.10.7
+# Enough to download the data and reproduce every number, table and figure of the paper
+# (tested with Python 3.12). For training and model runs use ../../requirements-experiments.txt.
+pandas==3.0.2
+numpy==2.4.4
+scikit-learn==1.8.0
 scipy==1.16.3
+matplotlib==3.10.7
+joblib
+datasets==5.1.0
+huggingface-hub>=1.31,<2
