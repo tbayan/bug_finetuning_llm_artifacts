@@ -1,8 +1,12 @@
 # Bug severity classification with fine-tuned open LLMs
 
-Code, data records and paper for the study *Bug Severity Classification with Fine-Tuned
+Code and data records for the study *Bug Severity Classification with Fine-Tuned
 Open LLMs: A Paired Comparison with TF-IDF and CodeBERT Baselines on Eclipse Reports*
-(Kanatov, Bayan, Boranbayev). The preprint will be linked here once it is on arXiv.
+(Kanatov, Bayan, Fazli, Kappassova, Boranbayev). The preprint will be linked here once it is on arXiv.
+
+The study is still under way: new experiments for a journal version are being added, so the
+`main` branch will move ahead of the preprint. Each version of the paper gets a git tag from
+which its results can be reproduced.
 
 ## What the study does
 
@@ -102,6 +106,19 @@ for tuning; the paper lists both as gaps of the original runs.
 | `api/`, `frontend/` | CyberTriage web tool |
 | `records/legacy_scoring/` | the routine that inflated the LLM scores in the earlier master's thesis, kept only as a record (see its README) |
 | `PROVENANCE.md` | where every file came from, with checksums |
+
+## History
+
+The study began as Asset Kanatov's master's thesis at Nazarbayev University (2026). Its code
+is at [asset8k/bug-triage-app](https://github.com/asset8k/bug-triage-app) and is kept as it
+was; this repository was built from its commit `b47c1d9`, with the changes listed in
+`PROVENANCE.md`. Two cautions when reading the original repository. Its back end computed
+LLM scores with a routine that added synthetic correct predictions, which produced the LLM
+figures reported in the thesis (see `records/legacy_scoring/`). Its README scores CodeBERT
+and the TF-IDF models on 4,000 test reports but the LLMs on 2,000, so its model ranking is
+not a paired comparison; the numbers in this repository are computed on the same 2,000
+reports for every model. The work continues at the School of Computing and Artificial
+Intelligence, Nazarbayev University, with the agreement of the original author.
 
 ## Licence
 
